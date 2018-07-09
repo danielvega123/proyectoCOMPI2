@@ -1,0 +1,77 @@
+<CHTML>
+
+<ENCABEZADO>
+<//- archivo que será utilizado en la página -//>
+<CJS ruta = "/home/danielvega/NetBeansProjects/USAC-WEB/src/Gramaticas/CJS/archivoentrada";> <FIN-CJS>
+<CJS ruta = "/home/danielvega/NetBeansProjects/USAC-WEB/src/Gramaticas/CJS/archivoentrada2";> <FIN-CJS>
+<CCSS ruta = "/home/danielvega/NetBeansProjects/USAC-WEB/src/Gramaticas/CSS/archivoentrada";> <FIN-CCSS>
+<titulo> "ola k ase" <fin - titulo>
+<FIN-ENCABEZADO>
+
+<CUERPO>
+<PANEL id="panel_1"; grupo = "grupo_areas_1"; alto = "200"; ancho = "250"; click="salida_consola()";>
+<TEXTO id="texto_1"; alineado = "derecha"; grupo="grupo_areas_1"; alto="50"; ancho="150";> "Esta es una etiqueta" <FIN-TEXTO>
+<SALTO-FIN>
+<CAJA_TEXTO id="cajatexto_1"; grupo="grupo_cajas_1"; alto="50"; ancho="200";> "Esta es una caja de texto" <FIN-CAJA_TEXTO>
+<SALTO-FIN>
+<IMAGEN id="imagen_1";click="prueba()"; ruta="/home/danielvega/Descargas/wall2.jpg"; grupo="grupo_1";  alto="50"; ancho="200";> "hola" <FIN-IMAGEN>
+<FIN-PANEL>
+<PANEL id="panel_1"; grupo = "grupo_areas_1"; alto = "400"; ancho = "400";>
+<TEXTO id = "texto_2"; grupo="grupo_textos_1";> "Esta tiene que tener un evento" <FIN-TEXTO>
+<SALTO-FIN>
+<CAJA_TEXTO id="ctexto_2"; grupo="grupo_textos_1"; alto="50"; ancho="150"; > "Esta es otra caja de texto" <FIN-CAJA_TEXTO>
+<SALTO-FIN>
+<IMAGEN id="imagen_2"; ruta="/home/danielvega/Descargas/wall2.jpg"; grupo="grupo_1"; alto="50"; ancho="200";> "hola" <FIN-IMAGEN>
+<FIN-PANEL>
+<SALTO-FIN>
+<IMAGEN id="imagen_3"; click="metodo()";> "hola" <FIN-IMAGEN>
+<BOTON id="btn1_1"; grupo="grupo_botones_1"; alto="50"; ancho="100";> "Enviar" <FIN-BOTON>
+<BOTON id= "btn2"; click="salida_consola()";> "Este boton" <FIN-BOTON>
+<BOTON id="btn3"; ruta="c://pro_1/index.chtml";> "Principal" <FIN-BOTON>
+<ENLACE ruta= "/home/danielvega/NetBeansProjects/USAC-WEB/src/Gramaticas/CHTML/EntradaPruebas";> "Pagina de Prueba" <FIN-ENLACE>
+<SALTO-FIN>
+<TABLA>
+<FIL_T>
+<CB>Nombre<FIN-CB>
+<CB>Apellido<FIN-CB>
+<CB>Edad<FIN-CB>
+<CB>Grafico<FIN-CB>
+<FIN-FIL_T>
+<FIL_T>
+<CT>Mack<FIN-CT>
+<CT>Hill<FIN-CT>
+<CT>15<FIN-CT>
+<CT> <BOTON id="btntabla1"; ruta="c://pro_1/index.chtml";> "Principal" <FIN-BOTON> <FIN-CT>
+<FIN-FIL_T>
+<FIL_T>
+<CT>Stark<FIN-CT>
+<CT>Iron<FIN-CT>
+<CT>50<FIN-CT>
+<CT> <BOTON id="btntable2"; ruta="c://pro_1/index.chtml";> "Principal" <FIN-BOTON> <FIN-CT>
+<FIN-FIL_T>
+<FIL_T>
+<CT>Stark<FIN-CT>
+<CT>Iron<FIN-CT>
+<CT>50<FIN-CT>
+<ct><IMAGEN id="imgtabla1"; ruta="/home/danielvega/Descargas/wall2.jpg"; grupo="grupo_1";  alto="50"; ancho="200";> "hola" <FIN-IMAGEN><fin-ct>
+<FIN-FIL_T>
+<FIN-TABLA>
+<TEXTO_A id="areatexto_1"; grupo="grupo_areass_1"; alto="50"; ancho="150"; > "Hola que hace, buena noche" <FIN-TEXTO_A>
+<CAJA_TEXTO>"holaaaaaaaaaaaaaaaaaa" <FIN-CAJA_TEXTO>
+<CAJA id="caja1";>
+<OPCION valor="1";>Uno<FIN-OPCION>
+<OPCION valor="2";>Dos<FIN-OPCION>
+<OPCION valor="3";>Tres<FIN-OPCION>
+<OPCION valor="4";>4<FIN-OPCION>
+<FIN-CAJA>
+<SPINNER id="spinner_1"; grupo="grupo_areass_1"; alto="50"; ancho="200";> 15 <FIN-SPINNER>
+<SPINNER id="spinner_2"; grupo="grupo_areass_1"; alto="50"; ancho="200";> 0<FIN-SPINNER>
+<SALTO-FIN>
+<CAJA id= "caja2"; click="salida_consola()"; alineado="derecha"; grupo="grupo_areass_1";>
+<OPCION valor="1";>Uno<FIN-OPCION>
+<OPCION valor="2";>Dos<FIN-OPCION>
+<FIN-CAJA>
+<SALTO-FIN>
+<BOTON id="btnsalir";> "Salir" <FIN-BOTON>
+<FIN-CUERPO>
+<FIN-CHTML>

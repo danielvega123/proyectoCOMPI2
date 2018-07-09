@@ -1,0 +1,14 @@
+<CHTML>
+
+<ENCABEZADO>
+<//- archivo que será utilizado en la página -//>
+<CJS ruta = "/home/danielvega/NetBeansProjects/USAC-WEB/src/Gramaticas/CJS/archivoentrada";> <FIN-CJS>
+<CCSS ruta = "/home/danielvega/NetBeansProjects/USAC-WEB/src/Gramaticas/CSS/archivoentrada";> <FIN-CCSS>
+<titulo> "ola k ase" <fin - titulo>
+<FIN-ENCABEZADO>
+
+<CUERPO>
+<IMAGEN id="imagen_3"; click="metodo()";> "hola" <FIN-IMAGEN>
+<BOTON id="id_1"; alto="50"; ancho="150"; click="salida_consola()";> "enviar a contar" <FIN-BOTON>
+<FIN-CUERPO>
+<FIN-CHTML>

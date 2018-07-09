@@ -1,0 +1,413 @@
+package Gramaticas.CSS;
+import Errores.ER;
+import Errores.ListaErrores;
+import EDD.CSJ.*;
+import java.io.*;
+import java_cup.runtime.*;
+import java.util.*;
+parser code
+{:
+// METODOS Y VARIABLES GLOBALES DEL PARSER, PUEDEN SER PUBLICAS O PRIVADAS
+ListaErrores errores = ListaErrores.getListaerror();
+/*public String resultado="";
+public Hashtable<String,Simbolo> simbolos = new Hashtable<String,Simbolo>();
+//public Hashtable<String,Simbolo_Ejemplo> simbolos;*/
+
+public ArbolCSJ arbol = new ArbolCSJ();
+public void syntax_error(Symbol s){
+/**Metodo al que se llama automaticamente ante algun error sintactico.*/
+        System.out.println("Error Sintactico en la Linea " + (s.right+1) +" Columna "+s.left+ ". Identificador " +s.value + " no reconocido." );
+        errores.agregarerror(new ER((s.right+1),s.left, (String) s.value, 2, "Valor no conocido"));
+}
+             
+
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+/**Metodo al que se llama en el momento en que ya no es posible una recuperacion de errores.*/
+        System.out.println("Error Sintactico en la Linea " + (s.right+1)+ "Columna "+s.left+"  Identificador " + s.value + " no reconocido.");
+        errores.agregarerror(new ER((s.right+1),s.left, (String) s.value, 2, "Valor no conocido"));
+}
+
+
+:}
+
+
+terminal rid,rtexto,rnegrilla,rcursiva,rmayuscula,rminuscula,rcapital,rformato,rletra,rtamtex,rfondoele,rautore,rvisible,rborde;
+terminal ropaque,rcolortext,rgrupo,rizquierda,rderecha,rcentrado,rjustificado,acorche,ccorche,menos,mas,por,div,dpuntos,igual;
+terminal pcoma,coma,aparen,cparen,rtrue,rfalse,num,iden,cadena,decimal, ralineado, rhorizontal, rvertical;
+
+non terminal Inicio, ID, ALINEADO, TEXTO,FORMATO,LETRA,TAMTEX,FONDOELEMENTO,AUTOREDIMENSION,VISIBLE,BORDE,OPAQUE,COLORTEXT,GRUPOEDITADO;
+non terminal IDEDITADO, TIPOALINEADO,LFORMATO,TIPOFORMATO, LCUERPO, TIPODIMENSION;
+non terminal E,S;
+
+
+precedence left mas, menos;
+precedence left por,div;
+
+start with Inicio;
+
+Inicio::= S:a{:
+		nodo s = parser.arbol.getRaiz();
+		s.setHijos((ArrayList<nodo>)a);
+		RESULT= s;
+	:};
+
+S::= S:a ID:b{:
+		ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+		hijos.add((nodo)b);
+		RESULT=hijos;
+	:}
+	|ID:a{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		RESULT=hijos;
+	:};		
+
+ID::= iden:a acorche LCUERPO:b ccorche{:
+		nodo s = new nodo("ID",aleft,aright,false,null);
+		nodo s1 = new nodo("propiedades",bleft,bright,false,null);
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		s1.setHijos((ArrayList<nodo>)b);
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		hijos.add(s1);
+		s.setHijos(hijos);
+		RESULT=s;
+	:};
+
+LCUERPO::= LCUERPO:a ALINEADO:b pcoma{:
+				ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+				hijos.add((nodo)b);
+				RESULT = hijos;
+			:}
+			|LCUERPO:a TEXTO:b pcoma{:
+				ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+				hijos.add((nodo)b);
+				RESULT = hijos;
+			:}
+			|LCUERPO:a FORMATO:b pcoma{:
+				ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+				hijos.add((nodo)b);
+				RESULT = hijos;
+			:}
+			|LCUERPO:a LETRA:b pcoma{:
+				ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+				hijos.add((nodo)b);
+				RESULT = hijos;
+			:}
+			|LCUERPO:a TAMTEX:b pcoma{:
+				ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+				hijos.add((nodo)b);
+				RESULT = hijos;
+			:}
+			|LCUERPO:a FONDOELEMENTO:b pcoma{:
+				ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+				hijos.add((nodo)b);
+				RESULT = hijos;
+			:}
+			|LCUERPO:a AUTOREDIMENSION:b pcoma{:
+				ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+				hijos.add((nodo)b);
+				RESULT = hijos;
+			:}
+			|LCUERPO:a VISIBLE:b pcoma{:
+				ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+				hijos.add((nodo)b);
+				RESULT = hijos;
+			:}
+			|LCUERPO:a BORDE:b pcoma{:
+				ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+				hijos.add((nodo)b);
+				RESULT = hijos;
+			:}
+			|LCUERPO:a OPAQUE:b pcoma{:
+				ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+				hijos.add((nodo)b);
+				RESULT = hijos;
+			:}
+			|LCUERPO:a COLORTEXT:b pcoma{:
+				ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+				hijos.add((nodo)b);
+				RESULT = hijos;
+			:}
+			|LCUERPO:a GRUPOEDITADO:b pcoma{:
+				ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+				hijos.add((nodo)b);
+				RESULT = hijos;
+			:}
+			|LCUERPO:a IDEDITADO:b pcoma{:
+				ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+				hijos.add((nodo)b);
+				RESULT = hijos;
+			:}
+			|ALINEADO:a pcoma{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add((nodo)a);	
+				RESULT=hijos;
+			:}
+			|TEXTO:a pcoma{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add((nodo)a);	
+				RESULT=hijos;
+			:}
+			|FORMATO:a pcoma{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add((nodo)a);	
+				RESULT=hijos;
+			:}
+			|LETRA:a pcoma{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add((nodo)a);	
+				RESULT=hijos;
+			:}
+			|TAMTEX:a pcoma{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add((nodo)a);	
+				RESULT=hijos;
+			:}
+			|FONDOELEMENTO:a pcoma{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add((nodo)a);	
+				RESULT=hijos;
+			:}
+			|AUTOREDIMENSION:a pcoma{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add((nodo)a);	
+				RESULT=hijos;
+			:}
+			|VISIBLE:a pcoma{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add((nodo)a);	
+				RESULT=hijos;
+			:}
+			|BORDE:a pcoma{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add((nodo)a);	
+				RESULT=hijos;
+			:}
+			|OPAQUE:a pcoma{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add((nodo)a);	
+				RESULT=hijos;
+			:}
+			|COLORTEXT:a pcoma{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add((nodo)a);	
+				RESULT=hijos;
+			:}
+			|GRUPOEDITADO:a pcoma{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add((nodo)a);	
+				RESULT=hijos;
+			:}
+			|IDEDITADO:a pcoma{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add((nodo)a);	
+				RESULT=hijos;
+			:};
+
+ALINEADO::= ralineado dpuntos igual TIPOALINEADO:a{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				nodo s = new nodo("alineado",aleft,aright,false,null);
+				hijos.add((nodo)a);
+				s.setHijos(hijos);
+				RESULT=s;
+			:};
+
+TIPOALINEADO::= rizquierda:a{:RESULT = new nodo("izquierda",aleft,aright,false,null);:}
+				|rderecha:a{:RESULT = new nodo("derecha",aleft,aright,false,null);:}
+				|rcentrado:a{:RESULT = new nodo("centrado",aleft,aright,false,null);:}
+				|rjustificado:a{:RESULT = new nodo("justificado",aleft,aright,false,null);:};
+	
+TEXTO::= rtexto dpuntos igual E:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			nodo s = new nodo("texto",aleft,aright,false,null);
+			hijos.add((nodo)a);
+			s.setHijos(hijos);
+			RESULT=s;
+		:};
+
+FORMATO::= rformato dpuntos igual LFORMATO:a{:
+				nodo s = new nodo("formato",aleft,aright,false,null);
+				s.setHijos((ArrayList<nodo>)a);
+				RESULT = s;
+			:};
+
+LFORMATO::= LFORMATO:a coma TIPOFORMATO:b{:
+				ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+				hijos.add((nodo)b);
+				RESULT=hijos;
+			:}
+			|TIPOFORMATO:a{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add((nodo)a);
+				RESULT=hijos;
+			:};
+
+TIPOFORMATO::= rnegrilla:a{:RESULT = new nodo("negrilla",aleft,aright,false,null);:}
+				|rcursiva:a{:RESULT = new nodo("cursiva",aleft,aright,false,null);:}
+				|rmayuscula:a{:RESULT = new nodo("mayuscula",aleft,aright,false,null);:}
+				|rminuscula:a{:RESULT = new nodo("minuscula",aleft,aright,false,null);:}
+				|rcapital:a{:RESULT = new nodo("capital",aleft,aright,false,null);:};
+
+LETRA::= rletra dpuntos igual E:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			nodo s = new nodo("letra",aleft,aright,false,null);
+			hijos.add((nodo)a);
+			s.setHijos(hijos);
+			RESULT=s;
+		:};
+
+TAMTEX::= rtamtex dpuntos igual E:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			nodo s = new nodo("tamtex",aleft,aright,false,null);
+			hijos.add((nodo)a);
+			s.setHijos(hijos);
+			RESULT=s;
+		:};
+
+FONDOELEMENTO::= rfondoele dpuntos igual E:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			nodo s = new nodo("fondoelemento",aleft,aright,false,null);
+			hijos.add((nodo)a);
+			s.setHijos(hijos);
+			RESULT=s;
+		:};
+
+AUTOREDIMENSION::= rautore dpuntos igual acorche E:a coma TIPODIMENSION:b ccorche{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			nodo s = new nodo("autoredimension",aleft,aright,false,null);
+			hijos.add((nodo)a);
+			hijos.add((nodo)b);
+			s.setHijos(hijos);
+			RESULT=s;
+		:};
+
+TIPODIMENSION::= rhorizontal:a{:RESULT = new nodo("horizontal",aleft,aright,false,null);:}
+				|rvertical:a{:RESULT = new nodo("vertical",aleft,aright,false,null);:};
+
+VISIBLE::= rvisible dpuntos igual E:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			nodo s = new nodo("visible",aleft,aright,false,null);
+			hijos.add((nodo)a);
+			s.setHijos(hijos);
+			RESULT=s;
+		:};
+
+BORDE::= rborde dpuntos igual acorche E:a coma E:b coma E:c ccorche{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			nodo s = new nodo("borde",aleft,aright,false,null);
+			hijos.add((nodo)a);
+			hijos.add((nodo)b);
+			hijos.add((nodo)c);
+			s.setHijos(hijos);
+			RESULT=s;
+		:};
+
+OPAQUE::= ropaque dpuntos igual E:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			nodo s = new nodo("opaco",aleft,aright,false,null);
+			hijos.add((nodo)a);
+			s.setHijos(hijos);
+			RESULT=s;
+		:};
+
+COLORTEXT::= rcolortext dpuntos igual E:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			nodo s = new nodo("colottext",aleft,aright,false,null);
+			hijos.add((nodo)a);
+			s.setHijos(hijos);
+			RESULT=s;
+		:};
+
+GRUPOEDITADO::= rgrupo aparen iden:a cparen{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			nodo s = new nodo("grupo_refererenciado",aleft,aright,false,null);
+			hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+			s.setHijos(hijos);
+			RESULT=s;
+		:};
+
+IDEDITADO::= rid aparen iden:a cparen{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			nodo s = new nodo("id_refererenciado",aleft,aright,false,null);
+			hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+			s.setHijos(hijos);
+			RESULT=s;
+		:};
+
+E::= E:a mas E:b{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		hijos.add((nodo)b);
+		nodo s = new nodo("+",aleft,aright,false,null);
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|E:a menos E:b{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		hijos.add((nodo)b);
+		nodo s = new nodo("-",aleft,aright,false,null);
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|E:a div E:b{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		hijos.add((nodo)b);
+		nodo s = new nodo("/",aleft,aright,false,null);
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|E:a por E:b{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		hijos.add((nodo)b);
+		nodo s = new nodo("*",aleft,aright,false,null);
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|iden:a{:
+		nodo s =new nodo("iden", aleft, aright, false, a);    
+    	ArrayList<nodo> hijos = new ArrayList<nodo> ();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s.setHijos(hijos);
+		RESULT = s;
+    :}
+	|num:a{:
+		nodo s =new nodo("num", aleft, aright, false, a);    
+    	ArrayList<nodo> hijos = new ArrayList<nodo> ();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|rtrue:a{:		
+		nodo s =new nodo("true", aleft, aright, false, a);    
+    	ArrayList<nodo> hijos = new ArrayList<nodo> ();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|rfalse:a{:
+		nodo s =new nodo("false", aleft, aright, false, a);    
+    	ArrayList<nodo> hijos = new ArrayList<nodo> ();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s.setHijos(hijos);
+		RESULT = s;
+    :}
+	|cadena:a{:
+		nodo s =new nodo("cadena", aleft, aright, false, a);    
+    	ArrayList<nodo> hijos = new ArrayList<nodo> ();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|decimal:a{:
+		nodo s =new nodo("decimal", aleft, aright, false, a);    
+    	ArrayList<nodo> hijos = new ArrayList<nodo> ();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|aparen E:a cparen{:
+		RESULT=a;
+	:};

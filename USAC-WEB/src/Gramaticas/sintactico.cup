@@ -1,0 +1,91 @@
+package cliente_gk_hk;
+import java.io.*;
+import java_cup.runtime.*;
+import java.util.*;
+parser code
+{:
+// METODOS Y VARIABLES GLOBALES DEL PARSER, PUEDEN SER PUBLICAS O PRIVADAS
+
+public String resultado="";
+public Hashtable<String,Simbolo> simbolos = new Hashtable<String,Simbolo>();
+//public Hashtable<String,Simbolo_Ejemplo> simbolos;
+public ArbolAST arbol = new ArbolAST();
+public void syntax_error(Symbol s){
+/**Metodo al que se llama automaticamente ante algun error sintactico.*/
+        System.out.println("Error Sintactico en la Linea " + (s.right+1) +" Columna "+s.left+ ". Identificador " +s.value + " no reconocido." );
+}
+             
+
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+/**Metodo al que se llama en el momento en que ya no es posible una recuperacion de errores.*/
+        System.out.println("Error Sintactico en la Linea " + (s.right+1)+ "Columna "+s.left+"  Identificador " + s.value + " no reconocido.");
+}
+
+
+:}
+
+
+terminal variables, mas,num,menos,por,div, mod,pot,sqrt, igual, palabra,decimal, caracter, aparen,cparen,diferente,mayor,menor;
+terminal mayorigual, menorigual, or,and, igualdad, modular;
+non terminal Inicio,S, E,R;
+
+
+
+precedence left mas, menos;
+precedence left por,div,mod;
+precedence left pot,sqrt;
+precedence left mayor, menor,mayorigual,menorigual, diferente, igualdad;
+precedence left or, and;
+
+
+
+
+start with Inicio;
+
+Inicio::= S Inicio {::}
+		|Inicio{::};
+
+S::= variables:a igual R:b{:
+	Simbolo s =new Simbolo("id","id",aleft,aright,a);
+	parser.arbol.nuevonodo(null, null, s);
+	Simbolo s1 =new Simbolo("DEV","DEV",aleft,aright,null);
+	parser.arbol.nuevonodo((Simbolo)s, (Simbolo)b, s1);
+	RESULT= parser.arbol.nuevonodo(s1, null,parser.arbol.getRaiz());
+:}| modular;
+
+R::=R:a and R:b{:RESULT = parser.arbol.nuevonodo((Simbolo)a, (Simbolo)b, new Simbolo("&&","&&",aleft,aright,null));:}
+	|R:a or R:b{:RESULT = parser.arbol.nuevonodo((Simbolo)a, (Simbolo)b, new Simbolo("||","||",aleft,aright,null));:}
+	|E:a mayor E:b{:RESULT = parser.arbol.nuevonodo((Simbolo)a, (Simbolo)b, new Simbolo(">",">",aleft,aright,null));:}
+	|E:a menor E:b{:RESULT = parser.arbol.nuevonodo((Simbolo)a, (Simbolo)b, new Simbolo("<","<",aleft,aright,null));:}
+	|E:a menorigual E:b{:RESULT = parser.arbol.nuevonodo((Simbolo)a, (Simbolo)b, new Simbolo("<=","<=",aleft,aright,null));:}
+	|E:a mayorigual E:b{:RESULT = parser.arbol.nuevonodo((Simbolo)a, (Simbolo)b, new Simbolo(">=",">=",aleft,aright,null));:}
+	|E:a diferente E:b{:RESULT = parser.arbol.nuevonodo((Simbolo)a, (Simbolo)b, new Simbolo("!=","!=",aleft,aright,null));:}
+	|E:a igualdad E:b{:RESULT = parser.arbol.nuevonodo((Simbolo)a, (Simbolo)b, new Simbolo("==","==",aleft,aright,null));:}
+	|E:a{:RESULT = a;:};
+
+E::= E:a mas E:b{:RESULT = parser.arbol.nuevonodo((Simbolo)a, (Simbolo)b, new Simbolo("+","+",aleft,aright,null));:}
+	|E:a menos E:b{:RESULT = parser.arbol.nuevonodo((Simbolo)a, (Simbolo)b, new Simbolo("-","-",aleft,aright,null));:}
+	|E:a div E:b{:RESULT = parser.arbol.nuevonodo((Simbolo)a, (Simbolo)b, new Simbolo("/","/",aleft,aright,null));:}
+	|E:a por E:b{:RESULT = parser.arbol.nuevonodo((Simbolo)a, (Simbolo)b, new Simbolo("*","*",aleft,aright,null));:}
+	|E:a mod E:b{:RESULT = parser.arbol.nuevonodo((Simbolo)a, (Simbolo)b, new Simbolo("mod","mod",aleft,aright,null));:}
+	|E:a pot E:b{:RESULT = parser.arbol.nuevonodo((Simbolo)a, (Simbolo)b, new Simbolo("pot","pot",aleft,aright,null));:}
+	|E:a sqrt E:b{:RESULT = parser.arbol.nuevonodo((Simbolo)a, (Simbolo)b, new Simbolo("sqrt","sqrt",aleft,aright,null));:}
+	|num:a {:     
+    //RESULT=a;
+		Simbolo s =new Simbolo("num","num",aleft,aright,a);    
+    	RESULT =  parser.arbol.nuevonodo(null, null, s);
+	:}
+	|variables:a
+	{: 
+		Simbolo s =new Simbolo("id","id",aleft,aright,a);
+		RESULT =  parser.arbol.nuevonodo(null, null, s);
+ 	:}
+	|palabra
+	{: 
+	:}|decimal{::}
+
+	|aparen R:a cparen{:
+	RESULT = a;
+	:}|caracter{::};
+
+	

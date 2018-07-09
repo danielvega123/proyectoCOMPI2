@@ -1,0 +1,74 @@
+Titular_ccss [
+//Inicio Grupo_areas_1
+GRUPO (grupo_areas_1);
+Formato := mayuscula, NEGRILLA, capital-t;
+FORMATO := cursiva;
+Letra := "Courier New";
+Tamtex := 15.5;
+Texto := "cambio a este texto al llamar el ccss"+5;
+alineado:= derecha;
+
+/*
+Comentario de
+Múltiples Líneas
+*/
+
+
+Visible := TRUE;
+OpaQUe := true;
+BORDE := [5, "blue", false];
+Fondoelemento := "red";
+
+//Fin Grupo_areas_1
+//Inicio Grupo_areas_2
+GRUPO (grupo_textos_1);
+Formato := mayuscula, NEGRILLA, capital-t;
+Letra := "Courier New";
+Tamtex := 13;
+Fondoelemento:="yellow";
+OpaQUe:= true;
+
+GRUPO (grupo_cajas_1);
+Formato := mayuscula, NEGRILLA, capital-t;
+Letra := "Courier New";
+Tamtex := 13;
+Fondoelemento:="yellow";
+OpaQUe:=true;
+BORDE := [5, "red", true];
+
+GRUPO (grupo_botones_1);
+Formato := mayuscula, NEGRILLA, capital-t;
+Letra := "Arial";
+Tamtex := 13;
+BORDE := [5, "#ff00ff", true];
+OpaQUe:=true;
+Fondoelemento:="blue";
+
+GRUPO (grupo_areass_1);
+Formato := mayuscula, cursiva, capital-t;
+Letra := "Arial";
+Tamtex := 13;
+BORDE := [5, "#00ffff", true];
+OpaQUe:=true;
+Fondoelemento:="green";
+
+
+ID (id_1);
+Formato := mayuscula, NEGRILLA, capital-t;
+Letra := "Arial";
+Tamtex := 12;
+OpaQUe :=true;
+Fondoelemento:="yellow";
+alineado := izquierda;
+Texto := "cambio a este texto al llamar el ccss"+5;
+//Tamelemento := [50, 50];
+]
+//Fin identificador_1
+caja_de_texto [
+ID (identificador_2);
+Formato := NEGRILLA;
+Letra := "Arial";
+Tamtex := 18;
+//Tamelemento := [150, 75];
+//IdElemento := caja25;
+]

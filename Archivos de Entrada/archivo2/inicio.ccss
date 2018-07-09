@@ -1,0 +1,136 @@
+formulario_inicial [
+GRUPO (grupoPaneles);
+alineado:= izquierda;
+/*
+Comentario de
+Múltiples Líneas
+*/
+Visible := TRUE;
+OpaQUe := true;
+BORDE := [3*5, "#ff" + "ff" + "ff", true];
+BORDE := [10/2 - 3, "blue", false];
+//Tamelemento := [150, 75];
+Fondoelemento := "red";
+
+GRUPO (grupo_cajas_1);
+Formato := mayuscula, NEGRILLA;
+Letra := "Courier New";
+Tamtex := 13;
+Fondoelemento:="yellow";
+OpaQUe:=true;
+BORDE := [5, "red", true];
+
+ID(titulogaleria);
+Formato := cursiva, NEGRILLA, capital-t;
+
+Letra := "Courier New";
+Tamtex := 15.5;
+Texto := "Galerio de Autos mas vendidos";
+alineado:= izquierda;
+/*
+Comentario de
+Múltiples Líneas
+*/
+//AutoRedimension := [false, Horizontal];
+//AutoRedimension := [true, VERTICAL];
+//Visible := false;
+//Visible := TRUE;
+
+
+GRUPO (grupoCarrito);
+alineado:= centrado;
+/*
+Comentario de
+Múltiples Líneas
+*/
+Visible := TRUE;
+
+BORDE := [3, "yellow", false];
+//Tamelemento := [150, 75];
+Fondoelemento := "red";
+
+GRUPO (grupo_menu);
+Formato := mayuscula, NEGRILLA;
+Letra := "Courier New";
+Tamtex := 13;
+Fondoelemento:="yellow";
+OpaQUe:=true;
+BORDE := [5, "red", true];
+
+ID(panel_carrito);
+
+Fondoelemento:="red";
+BORDE := [5, "green", true];
+
+
+grupo (negrita);
+Formato := cursiva, NEGRILLA, Mayuscula;
+letra:= "Arial";
+Tamtex:= 2*2*4 ;
+Fondoelemento:="red";
+
+grupo (panel_menu);
+Formato := cursiva, NEGRILLA, Mayuscula;
+letra:= "Arial";
+Tamtex:= 2*2*4 ;
+Fondoelemento:="red";	
+OpaQUe := TruE;
+BORDE := [3*3, "yellow", false];
+alineado:= derecha;
+
+grupo (panel_info);
+Formato := NEGRILLA, Mayuscula;
+letra:= "Arial";
+Tamtex:= 2*2*4 ;
+Fondoelemento:="#ff00FF";	
+OpaQUe := TruE;
+BORDE := [3*3, "blue", false];	
+alineado:= izquierda;
+
+grupo (panel_mision);
+Formato := cursiva,  Mayuscula;
+letra:= "Arial";
+Tamtex:= 2*2*4 ;
+Fondoelemento:="#00"+"00FF";	
+OpaQUe := TruE;
+BORDE := [4, "blue", false];	
+alineado:= centrado;
+
+grupo (panel_vision);
+Formato := cursiva, minuscula;
+letra:= "Arial";
+Tamtex:= 16 ;
+Fondoelemento:="red";
+OpaQUe := TruE;
+BORDE := [9, "pink", false];
+
+
+grupo (titulo);
+Formato := cursiva, negrilla, minuscula;
+letra:= "Calibri";
+Tamtex:= 16 ;
+Fondoelemento:="#ff0000";	
+OpaQUe := TruE;
+BORDE := [9, "red", false];	
+
+
+grupo (parrafo);
+Formato := cursiva, minuscula;
+letra:= "Calibri";
+Tamtex:= 16 ;
+Fondoelemento:="#ff0000";	
+OpaQUe := TruE;
+BORDE := [9, "red", false];	
+
+
+grupo (boton_redireccion);
+Formato := cursiva, minuscula;
+letra:= "Curier New";
+Tamtex:= 16 ;
+Fondoelemento:="#ff0000";	
+OpaQUe := TruE;
+BORDE := [9, "pink", false];	
+
+
+
+]

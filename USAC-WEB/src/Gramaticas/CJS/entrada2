@@ -1,0 +1,339 @@
+Dimv suma : 2*5+6 - false + 2.5 + hola;
+
+dimv a: (-(5*6-5-(2*5)++))++;
+
+
+DimV suma: "12/10/2016" + "12/02/05 23:20:14";
+
+DimV suma:  (2*'true')^2 * 'false' || 'false';
+
+DimV suma:  "hola" > "hola";
+
+DimV suma:  !false || false;
+
+funcion prueba(){
+	Dimv valor : numeroMayor(1,2);
+	imprimir(valor);
+}
+
+funcion numeroMayor(x,y){
+si(x > y){
+Retornar x;
+}sino{
+Dimv a,b;
+Para( a : 10; a > 0; --){
+	Para( b : 10; b > 0; --){
+			imprimir(a+"*"+b+"="+a*b);
+	}
+}
+retornar y;
+}
+}
+
+funcion salida_consola(){
+	imprimir("funciona :)");
+	Dimv valor = numeroMayor(1,2);
+	imprimivar(valor);
+}
+
+funcion prueba(){
+	Dimv valor : numeroMayor(1,2);
+	imprimir(valor);
+}
+
+funcion numeroMayor(x,y){
+si(x > y){
+Retornar x;
+}sino{
+Dimv a,b;
+Para( a : 10; a > 0; --){
+	Para( b : 10; b > 1; --){
+		imprimir(a+"*"+b+"="+a*b);
+		SELECCIONA (a+b){
+		caso 10:
+			mientras((a+b)%10==0){
+					imprimir("entro al while"+"debido a que: "+a+"+"+b+"="+(a+b));
+					detener;
+			}		
+		caso 12: 
+			mientras((a+b)%12==0){
+					imprimir("entro al while"+"debido a que: "+a+"+"+b+"="+(a+b));
+					detener;
+			}
+		casO 20:
+			mientras((a+b)%20==0){
+					imprimir("entro al while"+"debido a que: "+a+"+"+b+"="+(a+b));
+					detener;
+			}
+		defecto:
+			si(a*b==1){
+				detener;
+			}sino{
+				imprimir("entro al while"+"debido a que: "+a+"+"+b+"="+(a+b));
+			}
+		}	
+	}
+}
+retornar y;
+}
+}
+
+
+
+
+//ASIGNACIONES NORMALES
+Dimv fecha,vectorEstatico, valorVector;
+fecha: '12/10/2016 14:05:05';
+vectorEstatico : { 51 , 200 , 40 , 56};
+vectorEstatico{0} : 100;
+valorVector : vectorEstatico{0};
+vectorEstatico{2} : valorVector + vectorEstatico{1};
+
+
+
+
+vectorEstatico : { "Hola" , "Otra vez" , numeroMayor(5,10)};
+
+
+funcion numeroMayor(x,y){
+si(x > y){
+Retornar x;
+}sino{
+Retornar y;
+}
+}
+
+DimV NOMBRE: "Henry";
+'/ Se agregó un comentario
+de
+tres líneas/'
+DIMv fecha: "12/10/2016"+1;
+fecha: "12/10/2016 14:05:05"+1;
+Dimv miVector : { 14 ,240 , 350 };
+Dimv nombres : {"Hola", "Mundo" , "Otra" , "Vez"};
+DimV nuevoVector : { "Hola" , "Mundo" , 1 , 2 , 3 };
+DimV vectorStatico{3};
+vectorEstatico : { "Hola" , "Otra vez" , 250};
+DimV miNumero: 4;
+DimV vector_miNumero{miNumero};
+vectorEstatico : { 51 , 200 , 40 , 56};
+DimV valorVector;
+Dimv miVector : { 14 ,240 , 350 };
+
+
+
+miVector{0} : 100;
+valorVector : miVector{0};
+miVector{2} : valorVector + miVector{1};
+tamanioVector : miVector.Conteo;
+
+DimV miCadena;
+DimV miVector : { "hola" , 1 , 2 , 3 , "prueba" };
+MiCadena : miVector.aTexto();
+
+funcion prueba(){
+imprimir(hola);
+}
+funcion valor_mayor( x , y){
+imprimir(x+y);
+si(x > y){
+SELECCIONA (a*5){
+	caso 10:
+		imprimir(10);
+		Para( a : 10; a > 0; --){
+			b : 23;
+			Mientras( a < 10 ){
+				a : a + 1;
+				SI(a==b || b<10){
+					detener;
+				}
+			}
+		}
+	caso 12: 
+		imprimir(12);
+	casO 20:
+		imprimir(3);
+	defecto:
+		imprimir("RullCheck");
+
+}
+Imprimir(x);
+}sino{
+Imprimir(y);
+}
+}
+
+Dimv v1 , v2;
+v1: 10;
+v2: 11;
+v1: prueba(v1); 
+v2: prueba(v2); 
+v3: prueba(v1,v2);
+
+funcion numeroMayor(x,y){
+si(x > y){
+Retornar x;
+}sino{
+Retornar y;
+Mensaje("Hola mundo");
+Dimv X : 10;
+Mensaje(X);
+}
+
+Documento.Observador("listo", mi_funcion());
+Documento.Obtener("panel1");
+Dimv mi_boton : Documento.Obtener("mi_boton");
+Mi_boton.setElemento("ruta", "C:/...");
+Documento.Obtener("mi_imagen").setElemento ("ruta","~/rutanueva");
+}
+
+Dimv v1 , v2 , mayor;
+v1: 10;
+v2: 11;
+mayor: numeroMayor(v1,v2);
+
+Documento.Observador("listo", funcion(){
+Imprimir("Documento listo");
+});
+
+Dimv mi_boton : Documento.Obtener("mi_boton");
+funcion mi_funcion(){
+imprimir("Estas dentro de mi_funcion");
+}
+Mi_boton.Observador("click", mi_funcion());
+
+funcion tipo_operacion(tipo, num1 ,num2){
+	SELECCIONA (tipo){
+		caso "+":
+			retornar num1 + num2;
+		caso "-":
+			retornar num1 - num2;	
+					
+	}
+}
+
+funcion factorial(num){
+	si(num == 0){
+		retornar 1;
+	}sino{
+		retornar factorian(num) * factorial(num - 1); 
+	}
+}
+
+funcion salida_consola(){
+	imprimir("funciona :)");
+	Dimv valor : numeroMayor(2,1);
+	imprimir(valor);
+	valor : tipo_operacion("-",5,10);
+	imprimir(valor);
+	valor: factorial(5);
+	imprimir(valor);
+}
+
+
+
+
+
+dimv fecha1 : "01/02/2017";
+dimv fecha2 : "02/02/2017";
+dimv bandera : fecha1 > fecha2;
+
+DimV NOMBRE: "Henry";
+'/ Se agregó un comentario
+de
+tres líneas/'
+
+funcion tipo_operacion(tipo, num1 ,num2){
+	SELECCIONA (tipo){
+		caso "+":
+			retornar num1 + num2;
+		caso "-":
+			retornar num1 - num2;	
+					
+	}
+}
+
+Dimv mi_boton : Documento.Obtener("imagen_1");
+mi_boton.Observador("modificado", prueba());
+
+
+
+
+Documento.Obtener("imagen_1"). setElemento ("ruta","/home/danielvega/Descargas/wall2.jpg");
+
+'Dimv mi_boton : Documento.Obtener("imagen_1");
+'mi_boton.Observador("click", prueba());
+
+DImv mi_boton1 : Documento.Obtener("imagen_2");
+mi_boton1.Observador("modificado", prueba());
+	
+
+
+Dimv mi_text : Documento.Obtener("texto_2");
+mi_text.Observador("click", prueba());
+'Documento.obtener("texto_2").Observador("click",prueba());
+
+'/Dimv mi_box : Documento.Obtener("caja2");
+mi_box.Observador("click", prueba());'/
+'Documento.obtener("texto_2").Observador("click",prueba());
+
+Dimv vectorEstatico : { 51 , 100 , 40 , 56};
+vectorEstatico{6} : 100;
+Dimv b;
+funcion numeroPar(x){
+	Dimv a,b;
+	Para( a : 100; a > 0; --){
+		SELECCiona (a%2){
+			caso 0:
+				imprimir("Es par");
+
+			caso 1:
+				imprimir("no me agarren we");
+			caso 2:
+				imprimir("ya me agarraron we xd");
+				detener;
+		}
+		si(x > a){
+			imprimir("me salgo del for porque" + x + " > "+a);
+			retornar a;
+		}sino{
+			imprimir(a);
+		}
+	}
+}
+
+funcion factorial(num){
+	si(num <= 0){
+		retornar 1;
+	}sino{
+		retornar num*factorial(num-2) * num*factorial(num - 1); 
+	}
+}
+
+Documento.Observador("listo", funcion(){
+	Mensaje("Cuerpo cargado");
+});
+
+funcion prueba(){
+	Mensaje("Tamo Ready!!!");
+}
+
+funcion modificarimagen(){
+	Documento.Obtener("imagen_2"). setElemento ("click","prueba()");
+
+}
+
+funcion salida_consola(){
+	imprimir("funciona :)");
+	'Dimv valor : numeroMayor(2,1);
+	'Aimprimir(valor);
+	Dimv valor;
+	valor : numeroPar(50);
+	imprimir(valor);
+	'Dimv mi_boton : Documento.Obtener("btn2");
+	valor : factorial(10);
+	imprimir(valor);
+	Mensaje(valor);
+	modificarimagen();
+	
+}

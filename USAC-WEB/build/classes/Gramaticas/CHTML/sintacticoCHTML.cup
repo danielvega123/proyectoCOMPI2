@@ -1,0 +1,674 @@
+package Gramaticas.CHTML;
+import java.io.*;
+import java_cup.runtime.*;
+import java.util.*;
+import EDD.CSJ.*;
+import Errores.ER;
+import Errores.ListaErrores;
+parser code
+{:
+// METODOS Y VARIABLES GLOBALES DEL PARSER, PUEDEN SER PUBLICAS O PRIVADAS
+
+/*public String resultado="";
+public Hashtable<String,Simbolo> simbolos = new Hashtable<String,Simbolo>();
+//public Hashtable<String,Simbolo_Ejemplo> simbolos;*/
+
+ListaErrores errores = ListaErrores.getListaerror();
+public ArbolCSJ arbol = new ArbolCSJ();
+public void syntax_error(Symbol s){
+/**Metodo al que se llama automaticamente ante algun error sintactico.*/
+        System.out.println("Error Sintactico en la Linea " + (s.right+1) +" Columna "+s.left+ ". Identificador " +s.value + " no reconocido." );
+        errores.agregarerror(new ER((s.right+1),s.left, (String) s.value, 2, "Valor no conocido"));
+}
+             
+
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+/**Metodo al que se llama en el momento en que ya no es posible una recuperacion de errores.*/
+        System.out.println("Error Sintactico en la Linea " + (s.right+1)+ "Columna "+s.left+"  Identificador " + s.value + " no reconocido.");
+        errores.agregarerror(new ER((s.right+1),s.left, (String) s.value, 2, "Valor no conocido"));
+}
+
+
+
+:}
+
+
+terminal echtml,efin,eencabezado,ecjs,pruta,eccss,ecuerpo,efondo,epanel,etitulo,etexto,ecajatexto,eclick,eimagen,eboton,eenlace;
+terminal etabla,efila,eceldaencabezado,ecelda,eareatexto,ecajaopciones,eopcion,evalor,econtador,esalto,pid,pgrupo,palto,pancho;
+terminal palineado,menos,igual,pcoma,aparen,cparen, menor, mayor, num,iden,cadena, pizquierda, pderecha, pcentrado, rparrafo;
+
+non terminal Inicio, HEADER, LABELS, BODY, TCSJ, TCCSS, TITULO, ETIBODY, ETIPANEL, ETITEXTO, ETIIMAGEN, ETIBOTON, ETIENLACE;
+non terminal OPCIONES, LLAMADA, ETIHEADER, LISTAHEADERS, LISTALABELS, ETICAJATEXTO, ETITABLA, ETIFILAS, ETICOLUMNAS, CELDASENCABEZADO;
+non terminal CELDAS, LCOLUMNAS, ETIAREATEXTO, ETICAJAOPCIONES, OPCIONCAJA, ETIOPCIONES, ETISPINNER, ETISALTO, LPROPIEDADES, PROPIEDADES;
+non terminal VALALINEADO, VALPROPIEDAD, ENCABEZADO,LOPCIONES,LOP, LVALCELDAS;
+non terminal E;
+
+
+
+
+start with Inicio;
+
+Inicio::= menor echtml:a mayor LABELS:b menor efin menos echtml mayor{:
+			nodo s = new nodo("chtml",aleft,aright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			s.setHijos((ArrayList<nodo>)b);
+			hijos.add(s);
+			nodo ini = parser.arbol.getRaiz();
+			ini.setHijos(hijos);
+			RESULT = ini;
+		:};
+	
+LABELS::= /*LABELS HEADER
+		|LABELS BODY
+		|HEADER
+		|BODY;*/
+		HEADER:a BODY:b{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			hijos.add((nodo)b);
+			RESULT = hijos;
+		:};
+
+
+HEADER::= menor eencabezado:b mayor ETIHEADER:a menor efin menos eencabezado mayor{:
+			nodo s = new nodo("encabezado",bleft,bright,false,null);
+			s.setHijos((ArrayList<nodo>)a);
+			RESULT = s;
+		:};
+
+ETIHEADER::= ETIHEADER:a TCSJ:b{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				nodo s = new nodo("csj",aleft,aright,false,null);
+				hijos.add((nodo)b);
+				s.setHijos((hijos));
+				hijos = (ArrayList<nodo>)a;
+				hijos.add(s);
+				RESULT=hijos;
+			:}
+			|ETIHEADER:a TCCSS:b{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				nodo s = new nodo("css",aleft,aright,false,null);
+				hijos.add((nodo)b);
+				s.setHijos((hijos));
+				hijos = (ArrayList<nodo>)a;
+				hijos.add(s);
+				RESULT=hijos;
+			:}
+			|ETIHEADER:a TITULO:b{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				nodo s = new nodo("titulo",aleft,aright,false,null);
+				hijos.add((nodo)b);
+				s.setHijos((hijos));
+				hijos = (ArrayList<nodo>)a;
+				hijos.add(s);
+				RESULT=hijos;
+			:}
+			|TCSJ:a{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				nodo s = new nodo("csj",aleft,aright,false,null);
+				hijos.add((nodo)a);
+				s.setHijos((hijos));
+				hijos = new ArrayList<nodo>();
+				hijos.add(s);
+				RESULT=hijos;
+			:}
+			|TCCSS:a{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				nodo s = new nodo("css",aleft,aright,false,null);
+				hijos.add((nodo)a);
+				s.setHijos((hijos));
+				hijos = new ArrayList<nodo>();
+				hijos.add(s);
+				RESULT=hijos;
+			:}
+			|TITULO:a{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				nodo s = new nodo("titulo",aleft,aright,false,null);
+				hijos.add((nodo)a);
+				s.setHijos((hijos));
+				hijos = new ArrayList<nodo>();
+				hijos.add(s);
+				RESULT=hijos;
+			:};
+
+TITULO::= menor etitulo:a VALPROPIEDAD:c mayor cadena:b menor efin menos etitulo mayor{:
+	    nodo cad = new nodo("cadena",bleft,bright,false,null);
+	    ArrayList<nodo> hijos = new ArrayList<>();
+		nodo s = new nodo(b.toString(),bleft,bright,false,null);
+	    hijos.add(s);
+		cad.setHijos(hijos);
+		RESULT = cad;
+	:};
+
+TCSJ::= menor ecjs:a pruta igual cadena:b pcoma mayor menor efin menos ecjs mayor{:
+		nodo s = new nodo(b.toString(),bleft,bright,false,null);
+		RESULT = s;
+	:};
+
+TCCSS::= menor eccss:a pruta igual cadena:b pcoma mayor menor efin menos eccss mayor{:
+		nodo s = new nodo(b.toString(),bleft,bright,false,null);
+		RESULT = s;
+	:};
+
+BODY::= menor ecuerpo:a VALPROPIEDAD:c  mayor ETIBODY:b menor efin menos ecuerpo mayor{:
+		nodo s = new nodo("cuerpo",aleft,aright,false,null);
+		
+		s.setHijos((ArrayList<nodo>)b);
+		RESULT = s;
+	:};
+
+ETIBODY::=ETIBODY:a ETIPANEL:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|ETIBODY:a ETITEXTO:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|ETIBODY:a ETIIMAGEN:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|ETIBODY:a ETIBOTON:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|ETIBODY:a ETIENLACE:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|ETIBODY:a ETICAJATEXTO:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|ETIBODY:a ETITABLA:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|ETIBODY:a ETIAREATEXTO:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|ETIBODY:a ETICAJAOPCIONES:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|ETIBODY:a ETISPINNER:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|ETIBODY:a ETISALTO:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|ETISALTO:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|ETISPINNER:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|ETIAREATEXTO:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|ETICAJAOPCIONES:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|ETITABLA:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|ETIPANEL:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|ETITEXTO:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|ETIIMAGEN:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|ETIBOTON:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|ETIENLACE:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|ETICAJATEXTO:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:};
+
+ETISALTO::= menor esalto:a menos efin mayor {:
+				RESULT = new nodo("salto",aleft,aright,false,null);
+			:};
+
+ETISPINNER::= menor econtador:a VALPROPIEDAD:b mayor num:c menor efin menos econtador mayor{:
+			nodo s = new nodo("spinner",aleft,aright,false,null);
+			nodo n =new nodo("num", aleft, aright, false, a);    
+    		ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add(new nodo(c.toString(),cleft,cright,false,null));
+			n.setHijos(hijos);
+			hijos = new ArrayList<nodo>();
+
+			if(b!=null){hijos.add((nodo)b);}
+			hijos.add(n);
+			s.setHijos(hijos);
+			RESULT=s;
+		:};
+
+ETICAJAOPCIONES::= menor ecajaopciones:d /*OPCIONES:a*/ VALPROPIEDAD:b mayor OPCIONCAJA:c menor efin menos ecajaopciones mayor{:
+			nodo s = new nodo("cajaopcion",dleft,dright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			nodo hi = new nodo("listaopciones",cleft,cright,false,null);
+			hi.setHijos((ArrayList<nodo>)c);
+
+			hijos = new ArrayList<nodo>();
+			//if(a!=null){hijos.add((nodo)a);}
+			if(b!=null){hijos.add((nodo)b);}
+			hijos.add(hi);
+			s.setHijos(hijos);
+			RESULT = s;
+		:};
+
+OPCIONCAJA::= OPCIONCAJA:a ETIOPCIONES:b{:
+				ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+				hijos.add((nodo)b);
+				RESULT=hijos;
+			:}
+			|ETIOPCIONES:a{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add((nodo)a);
+				RESULT=hijos;
+			:};
+
+
+ETIOPCIONES::= menor eopcion:h evalor:d igual cadena:e pcoma mayor E:a menor efin menos eopcion mayor{:
+			nodo s = new nodo("opcion",hleft,hright,false,null);
+			nodo val = new nodo("valor",dleft,dright,false,null);
+			nodo eti = new nodo("etiqueta",aleft,aright,false,null);
+
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add(new nodo(e.toString(),eleft,eright,false,null));
+			val.setHijos(hijos);
+			hijos = new ArrayList<nodo>();
+
+			hijos.add((nodo)a);
+			eti.setHijos(hijos);
+			hijos = new ArrayList<nodo>();
+
+			hijos.add(val);
+			hijos.add(eti);
+			s.setHijos(hijos);
+			RESULT=s;
+
+		:};
+
+ETIAREATEXTO::= menor eareatexto:c /*OPCIONES:a*/ VALPROPIEDAD:b mayor E:d menor efin menos eareatexto mayor{:
+			nodo s = new nodo("areatexto",cleft,cright,false,null);
+			//nodo cad = new nodo("valor",dleft,dright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			//hijos.add((nodo)d);
+			//cad.setHijos(hijos);
+			//hijos = new ArrayList<nodo>();
+			//if(a!=null){hijos.add((nodo)a);}
+			if(b!=null){hijos.add((nodo)b);}
+			hijos.add((nodo)d);
+			s.setHijos(hijos);
+			RESULT = s;
+		:};
+
+
+ETITABLA::= menor etabla:a VALPROPIEDAD:b mayor LCOLUMNAS:c menor efin menos etabla mayor{:
+			nodo s = new nodo("tabla",aleft,aright,false,null);
+			nodo col = new nodo("listacolumnas",cleft,cright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			col.setHijos((ArrayList<nodo>)c);
+			if(b!=null){hijos.add((nodo)b);}
+			hijos.add(col);
+			s.setHijos(hijos);
+			RESULT=s;
+		:};
+
+
+LCOLUMNAS::= LCOLUMNAS:a ETIFILAS:b{:
+				ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+				hijos.add((nodo)b);
+				RESULT=hijos;
+			:}
+			|ETIFILAS:a{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add((nodo)a);
+				RESULT=hijos;
+			:};
+
+
+ETIFILAS::= menor efila:a mayor ETICOLUMNAS:b menor efin menos efila mayor{:
+			nodo s = new nodo("listaceldas",aleft,aright,false,null);
+			s.setHijos((ArrayList<nodo>)b);
+			RESULT=s;
+		:};
+
+
+ETICOLUMNAS::= ETICOLUMNAS:a CELDASENCABEZADO:b{:
+					ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+					hijos.add((nodo)b);
+					RESULT = hijos;
+				:}
+				|ETICOLUMNAS:a CELDAS:b{:
+					ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+					hijos.add((nodo)b);
+					RESULT = hijos;
+				:}
+				|CELDASENCABEZADO:a{:
+					ArrayList<nodo> hijos = new ArrayList<nodo>();
+					hijos.add((nodo)a);
+					RESULT = hijos;
+				:}
+				|CELDAS:a{:
+					ArrayList<nodo> hijos = new ArrayList<nodo>();
+					hijos.add((nodo)a);
+					RESULT = hijos;
+				:};
+
+CELDASENCABEZADO::= menor eceldaencabezado:a mayor E:b menor efin menos eceldaencabezado mayor{:
+			nodo s = new nodo("celdaencabezado",aleft,aright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)b);
+			s.setHijos(hijos);
+			RESULT = s;
+		:};
+
+CELDAS::= menor ecelda:a mayor LVALCELDAS:b menor efin menos ecelda mayor{:
+			nodo s = new nodo("celda",aleft,aright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)b);
+			s.setHijos(hijos);
+			RESULT = s;
+		:};
+
+LVALCELDAS::= E:a{:
+				RESULT=a;
+			:}
+			|ETITEXTO:a{:
+				RESULT=a;
+			:}
+			|ETIBOTON:a{:
+				RESULT=a;
+			:}
+			|ETIIMAGEN:a{:
+				RESULT=a;
+			:};
+
+
+ETIENLACE::= menor eenlace:c /*OPCIONES:a*/ VALPROPIEDAD:b mayor E:d menor efin menos eenlace mayor{:
+			nodo s = new nodo("enlace",cleft,cright,false,null);
+			//nodo cad = new nodo("valor",dleft,dright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			//hijos.add((nodo)d);
+			//cad.setHijos(hijos);
+
+			hijos = new ArrayList<nodo>();
+			if(b!=null){hijos.add((nodo)b);}
+			hijos.add((nodo)d);
+			s.setHijos(hijos);
+			RESULT = s;
+		:};
+
+ETIBOTON::= menor eboton:c /*OPCIONES:a*/ VALPROPIEDAD:b mayor E:d menor efin menos eboton mayor{:
+			nodo s = new nodo("boton",cleft,cright,false,null);
+			//nodo cad = new nodo("valor",dleft,dright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			//hijos.add((nodo)d);
+			//cad.setHijos(hijos);
+			hijos = new ArrayList<nodo>();
+
+			//hijos = new ArrayList<nodo>();
+			//if(a!=null){hijos.add((nodo)a);}
+			if(b!=null){hijos.add((nodo)b);}
+			hijos.add((nodo)d);
+			s.setHijos(hijos);
+			RESULT = s;
+		:};
+
+ETIIMAGEN::= menor eimagen:c /*OPCIONES:a*/ VALPROPIEDAD:b mayor cadena:d menor efin menos eimagen mayor{:
+			nodo s = new nodo("imagen",cleft,cright,false,null);
+			nodo cad = new nodo("cadena",dleft,dright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add(new nodo(d.toString(),dleft,dright,false,null));
+			cad.setHijos(hijos);
+			hijos = new ArrayList<nodo>();
+
+			//if(a!=null){hijos.add((nodo)a);}
+			if(b!=null){hijos.add((nodo)b);}
+			hijos.add(cad);
+			s.setHijos(hijos);
+			RESULT = s;
+		:}|menor eimagen:c VALPROPIEDAD:b mayor menor efin menos eimagen mayor{:
+			nodo s = new nodo("imagen",cleft,cright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			//hijos.add(new nodo(d.toString(),dleft,dright,false,null));
+			//cad.setHijos(hijos);
+			//hijos = new ArrayList<nodo>();
+
+			//if(a!=null){hijos.add((nodo)a);}
+			if(b!=null){hijos.add((nodo)b);}
+			//hijos.add(cad);
+			s.setHijos(hijos);
+			RESULT = s;
+		:};
+
+/*VALIMAGEN::= |cadena:a{:
+		nodo s =new nodo("cadena", aleft, aright, false, a);    
+    	ArrayList<nodo> hijos = new ArrayList<nodo> ();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s.setHijos(hijos);
+		RESULT = s;
+	:};
+		| {:RESULT=null;:}*/
+
+/*OPCIONES::= LOP:a{:
+				nodo s = new nodo("listaopciones",aleft,aright,false,null);
+				s.setHijos((ArrayList<nodo>)a);
+				RESULT=s;
+			:}
+			| {:RESULT = null;:};
+
+LOP::= LOP:a LOPCIONES:b pcoma{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT = hijos;
+		:}
+		|LOPCIONES:a pcoma{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT = hijos;
+		:};
+
+LOPCIONES::=pruta:a igual cadena:b{:
+				nodo s = new nodo("ruta",aleft,aright,false,null);
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add(new nodo(b.toString(),bleft,bright,false,null));
+				s.setHijos(hijos);
+				RESULT = s;
+			:} 
+			|eclick:a igual cadena:b{:
+				nodo s = new nodo("click",aleft,aright,false,null);
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add(new nodo(b.toString(),bleft,bright,false,null));
+				s.setHijos(hijos);
+				RESULT = s;
+			:};*/
+
+
+ETITEXTO::= menor etexto:c /*OPCIONES:a*/ VALPROPIEDAD:b mayor E:d menor efin menos etexto mayor{:
+			nodo s = new nodo("texto",cleft,cright,false,null);
+			//nodo cad = new nodo("valor",dleft,dright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			//hijos.add((nodo)d);
+			//cad.setHijos(hijos);
+			hijos = new ArrayList<nodo>();
+
+			//if(a!=null){hijos.add((nodo)a);}
+			if(b!=null){hijos.add((nodo)b);}
+			hijos.add((nodo)d);
+			s.setHijos(hijos);
+			RESULT = s;
+		:};
+
+ETICAJATEXTO::= menor ecajatexto:c /*OPCIONES:a*/ VALPROPIEDAD:b mayor E:d menor efin menos ecajatexto mayor{:
+			nodo s = new nodo("cajatexto",cleft,cright,false,null);
+			//nodo cad = new nodo("valor",dleft,dright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			//hijos.add((nodo)d);
+			//cad.setHijos(hijos);
+
+			hijos = new ArrayList<nodo>();
+			if(b!=null){hijos.add((nodo)b);}
+			hijos.add((nodo)d);
+			s.setHijos(hijos);
+			RESULT = s;
+		:};
+
+ETIPANEL::= menor epanel:c /*OPCIONES:a*/ VALPROPIEDAD:b mayor ETIBODY:d menor efin menos epanel mayor{:
+			nodo s = new nodo("panel",cleft,cright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			//if(a!=null){hijos.add((nodo)a);}
+			if(b!=null){hijos.add((nodo)b);}
+			nodo inst = new nodo("cuerpo",dleft,dright,false,null);
+			inst.setHijos((ArrayList<nodo>)d);
+			hijos.add(inst);
+			s.setHijos(hijos);
+			RESULT = s;
+		:};
+
+VALPROPIEDAD::= LPROPIEDADES:a{:
+					nodo s = new nodo("listapropiedades",aleft,aright,false,null);
+					s.setHijos((ArrayList<nodo>)a);
+					RESULT=s;
+				:}
+				| {:RESULT = null;:};
+
+LPROPIEDADES::= LPROPIEDADES:a PROPIEDADES:b pcoma{:
+					ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+					hijos.add((nodo)b);
+					RESULT = hijos;
+				:}
+				|PROPIEDADES:a pcoma{:
+					ArrayList<nodo> hijos = new ArrayList<nodo>();
+					hijos.add((nodo)a);
+					RESULT = hijos;
+				:};
+
+PROPIEDADES::= pid:a igual cadena:b{:
+				nodo s = new nodo("id",aleft,aright,false,null);
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add(new nodo(b.toString(),bleft,bright,false,null));
+				s.setHijos(hijos);
+				RESULT = s;
+			:}
+			|palto:a igual cadena:b{:
+				nodo s = new nodo("alto",aleft,aright,false,null);
+				nodo s1 =new nodo("num", aleft, aright, false, null);    		
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+
+				hijos.add(new nodo(b.toString(),bleft,bright,false,null));
+				s1.setHijos(hijos);
+				hijos = new ArrayList<nodo>();
+
+				hijos.add(s1);
+				s.setHijos(hijos);
+				RESULT = s;
+			:}
+			|pgrupo:a igual cadena:b{:
+				nodo s = new nodo("grupo",aleft,aright,false,null);
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add(new nodo(b.toString(),bleft,bright,false,null));
+				s.setHijos(hijos);
+				RESULT = s;
+			:}
+			|pancho:a igual cadena:b{:
+				nodo s = new nodo("ancho",aleft,aright,false,null);
+				nodo s1 =new nodo("num", aleft, aright, false, null);    		
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+
+				hijos.add(new nodo(b.toString(),bleft,bright,false,null));
+				s1.setHijos(hijos);
+				hijos = new ArrayList<nodo>();
+
+				hijos.add(s1);
+				s.setHijos(hijos);
+				RESULT = s;
+			:}
+			|palineado:a igual cadena:b{:
+				nodo s = new nodo("alineado",aleft,aright,false,null);
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add(new nodo(b.toString(),bleft,bright,false,null));
+				s.setHijos(hijos);
+				RESULT = s;
+			:}
+			|pruta:a igual cadena:b{:
+				nodo s = new nodo("ruta",aleft,aright,false,null);
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add(new nodo(b.toString(),bleft,bright,false,null));
+				s.setHijos(hijos);
+				RESULT = s;
+			:} 
+			|eclick:a igual cadena:b{:
+				nodo s = new nodo("click",aleft,aright,false,null);
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add(new nodo(b.toString(),bleft,bright,false,null));
+				s.setHijos(hijos);
+				RESULT = s;
+			:};
+
+E::= iden:a{:
+		nodo s =new nodo("iden", aleft, aright, false, a);    
+    	ArrayList<nodo> hijos = new ArrayList<nodo> ();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s.setHijos(hijos);
+		RESULT = s;
+    :}
+	|num:a{:
+		nodo s =new nodo("num", aleft, aright, false, a);    
+    	ArrayList<nodo> hijos = new ArrayList<nodo> ();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s.setHijos(hijos);
+		RESULT = s;
+	:}|cadena:a{:
+		nodo s =new nodo("cadena", aleft, aright, false, a);    
+    	ArrayList<nodo> hijos = new ArrayList<nodo> ();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s.setHijos(hijos);
+		RESULT = s;
+	:};
+

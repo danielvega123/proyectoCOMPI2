@@ -1,0 +1,54 @@
+Titular_ccss [
+//Inicio Grupo_areas_1
+GRUPO (grupoPaneles);
+Formato := mayuscula, NEGRILLA, capital-t;
+Formato := MINUSCULA;
+FORMATO := cursiva;
+Letra := "Courier New";
+Tamtex := 15.5;
+Texto := "cambio a este texto al llamar el ccss"+5;
+alineado:= izquierda;
+/*
+Comentario de
+Múltiples Líneas
+*/
+//AutoRedimension := [false, Horizontal];
+//AutoRedimension := [true, VERTICAL];
+//Visible := false;
+//Visible := TRUE;
+OpaQUe := faLSe;
+//BORDE := [15, "#ffffff", true];
+BORDE := [5, "blue", false];
+//Tamelemento := [150, 75];
+Fondoelemento := "red";
+//Fondoelemento := "#6365ff ";
+//SelectTextColor:= "blue";
+//Colortext := "black";
+//IdElemento := area15;
+//Fin Grupo_areas_1
+//Inicio Grupo_areas_2
+GRUPO (grupo_1);
+Formato := mayuscula, NEGRILLA, capital-t;
+Letra := "Courier New";
+Tamtex := 13;
+//Tamelemento := [200, 200];
+//Fin Grupo_areas_2
+//Inicio identificador_1
+ID (identificador_1);
+Formato := mayuscula, NEGRILLA, capital-t;
+Letra := "Arial";
+Tamtex := 12;
+//Tamelemento := [50, 50];
+]
+//Fin identificador_1
+caja_de_texto [
+ID (identificador_2);
+Formato := NEGRILLA;
+Letra := "Arial";
+Tamtex := 18;
+//Tamelemento := [150, 75];
+//IdElemento := caja25;
+
+grupo(negrita);
+
+]

@@ -1,0 +1,109 @@
+DimV NOMBRE: "Henry";
+'/ Se agregó un comentario
+de
+tres líneas/'
+
+funcion tipo_operacion(tipo, num1 ,num2){
+	SELECCIONA (tipo){
+		caso "+":
+			retornar num1 + num2;
+		caso "-":
+			retornar num1 - num2;	
+					
+	}
+}
+
+Dimv mi_boton : Documento.Obtener("imagen_2");
+mi_boton.Observador("modificado", prueba());
+
+Dimv mi_bigbellbox : Documento.Obtener("caja2");
+mi_bigbellbox.Observador("listo", prueba());
+
+
+
+Documento.Obtener("imagen_2"). setElemento ("ruta","/home/danielvega/Descargas/wall.jpg");
+
+'Dimv mi_boton : Documento.Obtener("imagen_1");
+'mi_boton.Observador("click", prueba());
+
+DImv mi_boton1 : Documento.Obtener("imagen_2");
+mi_boton1.Observador("modificado", prueba());
+	
+
+
+Dimv mi_text : Documento.Obtener("texto_2");
+mi_text.Observador("click", prueba());
+
+Dimv vectorEstatico : { 51 , 100 , 40 , 56};
+vectorEstatico{6} : 100;
+Dimv b;
+funcion numeroPar(x){
+	Dimv a,b;
+	Para( a : 100; a > 0; --){
+		SELECCiona (a%2){
+			caso 0:
+				imprimir("Es par");
+
+			caso 1:
+				imprimir("no me agarren we");
+			caso 2:
+				imprimir("ya me agarraron we xd");
+				detener;
+		}
+		si(x > a){
+			imprimir("me salgo del for porque" + x + " > "+a);
+			retornar a;
+		}sino{
+			imprimir(a);
+		}
+	}
+}
+
+funcion factorial(num){
+	si(num <= 0){
+		retornar 1;
+	}sino{
+		retornar num*factorial(num - 1); 
+	}
+}
+
+Documento.Observador("listo", funcion(){
+	Mensaje("Cuerpo cargado");
+});
+
+funcion prueba(){
+	Mensaje("Tamo Ready!!!");
+}
+
+funcion modificarimagen(){
+	Documento.Obtener("imagen_2"). setElemento ("click","prueba()");
+	'Documento.Obtener("btn2"). setElemento ("alineado","centrado");
+	
+	Documento.Obtener("imagen_1").setElemento ("alto","50");
+	Documento.Obtener("imagen_1").setElemento ("ancho","50");
+	'Documento.Obtener("imagen_1"). setElemento ("id","img1");
+
+
+}
+
+funcion salida_consola(){
+	imprimir("funciona :)");
+	Dimv valor : numeroMayor(2,1);
+	imprimir(valor);
+	Dimv valor;
+	valor : numeroPar(50);
+	imprimir(valor);
+	Dimv mi_boton : Documento.Obtener("btn2");
+	valor : factorial(10);
+	imprimir(valor);
+	Mensaje(valor);
+	modificarimagen();
+	'valor: fibonacci(30);
+	'Mensaje(valor);
+	dimv i :0;
+	para(i:0;i<5;++){
+		imprimir(fibonacci(i));
+	}
+	
+}
+

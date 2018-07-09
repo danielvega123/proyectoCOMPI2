@@ -1,0 +1,27 @@
+funcion ordenarburbuja(){
+	dimv i,j,aux;
+	Dimv vectorEstatico1 : { 51 , 200 , 40 , 56};
+	para(i : 0;i< vectorEstatico1.conteo;++){
+        para(j :0;j<vectorEstatico1.conteo - 1;++){
+            si(vectorEstatico1{j} > vectorEstatico1{j+1}){
+                 aux : vectorEstatico1{j};
+                 vectorEstatico1{j} : vectorEstatico1{j+1};
+                 vectorEstatico1{j+1} :aux;
+            }
+        }
+    }
+    imprimir(vectorEstatico1.atexto());
+}
+
+
+funcion fibonacci(n){
+	si(n>1){
+		retornar fibonacci(n-1) + fibonacci(n-2);
+	}
+	si(n==1){
+		retornar 1;
+	}
+	si(n==0){
+		retornar 0;
+	}
+}

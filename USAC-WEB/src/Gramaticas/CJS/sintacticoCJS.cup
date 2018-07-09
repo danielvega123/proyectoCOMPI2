@@ -1,0 +1,1115 @@
+package Gramaticas.CJS;
+import EDD.CSJ.*;
+import java.io.*;
+import java_cup.runtime.*;
+import java.util.*;
+import Errores.ER;
+import Errores.ListaErrores;
+parser code
+{:
+// METODOS Y VARIABLES GLOBALES DEL PARSER, PUEDEN SER PUBLICAS O PRIVADAS
+
+ListaErrores errores = ListaErrores.getListaerror();
+/*public String resultado="";
+public Hashtable<String,Simbolo> simbolos = new Hashtable<String,Simbolo>();
+
+//public Hashtable<String,Simbolo_Ejemplo> simbolos;*/
+public ArbolCSJ arbol = new ArbolCSJ();
+public void syntax_error(Symbol s){
+/**Metodo al que se llama automaticamente ante algun error sintactico.*/
+        System.out.println("Error Sintactico en la Linea " + (s.right+1) +" Columna "+s.left+ ". Identificador " +s.value + " no reconocido." );
+        errores.agregarerror(new ER((s.right+1),s.left, (String) s.value, 2, "Valor no conocido"));
+}
+             
+
+public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+/**Metodo al que se llama en el momento en que ya no es posible una recuperacion de errores.*/
+        System.out.println("Error Sintactico en la Linea " + (s.right+1)+ "Columna "+s.left+"  Identificador " + s.value + " no reconocido.");
+        errores.agregarerror(new ER((s.right+1),s.left, (String) s.value, 2, "Valor no conocido"));
+}
+
+
+:}
+
+
+terminal rdimv,setelemento,obtener,observador,documento,mensaje,retornar,funcion,imprimir,detener,mientras,para,defecto,caso,selecciona;
+terminal sino,si,atexto,rconteo,and,or,igualacion,menorigual,mayorigual,diferente,not,mod,pot,div,por,mas,menos,menor,mayor,igual,pcoma;
+terminal dpuntos,punto,aparen,cparen,allave,cllave,comillasimple,rtrue,rfalse,num,iden,cadena,decimal, incrementar, decrementar, coma;
+terminal rlisto, rmodificado, rcliqueado, comillas,dateti,date;
+
+non terminal Inicio, DECVAR, ASIGNACION, TIME, LINSTRUCCIONES,ASIGVALOR, LISTADATOS, METODO, LPARAM, LINSTRU, IMPRE, IF, ELIF;
+non terminal LID, ASIG, LLAMADA, SELECT, DEF, LCASOS, CASO, FOR, OPEFOR, WHILE, DETENER, RETORNO, MSG, DOCUMENTO, LSENTENCIAS, SETELEMENT;
+non terminal SETTEAR, OBSERVADOR, FUNCION, REFERENCIA;
+non terminal E,R;
+
+precedence left mas, menos;
+precedence left por,div, mod;
+precedence right pot;
+precedence left incrementar, decrementar;
+precedence left mayor, menor,mayorigual,menorigual, diferente, igualacion;
+precedence left or;
+precedence left and;
+precedence left not;
+
+
+start with Inicio;
+
+Inicio::= LINSTRUCCIONES:a{:
+			nodo s = parser.arbol.getRaiz();
+			s.setHijos((ArrayList<nodo>)a);
+			RESULT= s;
+		:};
+
+
+LINSTRUCCIONES::=LINSTRUCCIONES:a IMPRE:b pcoma{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRUCCIONES:a IF:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRUCCIONES:a SELECT:b {:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRUCCIONES:a FOR:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRUCCIONES:a DECVAR:b pcoma{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRUCCIONES:a ASIGVALOR:b pcoma{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRUCCIONES:a WHILE:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRUCCIONES:a DOCUMENTO:b pcoma{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRUCCIONES:a SETELEMENT:b pcoma{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRUCCIONES:a MSG:b pcoma{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRUCCIONES:a LLAMADA:b pcoma{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRUCCIONES:a METODO:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRUCCIONES:a REFERENCIA:b pcoma{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|REFERENCIA:a pcoma{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|LLAMADA:a pcoma{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|SETELEMENT:a pcoma{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|DOCUMENTO:a pcoma{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|MSG:a pcoma{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|WHILE:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|DECVAR:a pcoma{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|ASIGVALOR:a pcoma{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|FOR:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|SELECT:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|IF:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|IMPRE:a pcoma{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|METODO:b{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:};
+				
+
+
+
+
+
+LLAMADA::= iden:a aparen LISTADATOS:b cparen{:
+			nodo s = new nodo("llamada",aleft,aright,false,null);
+			nodo funcion = new nodo(a.toString(),aleft,aright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add(funcion);
+			if(b!=null){
+				nodo s1 = new nodo("listadatos",bleft,bright,false,null);
+				s1.setHijos((ArrayList<nodo>)b);
+				hijos.add(s1);
+			}
+			s.setHijos(hijos);
+			RESULT = s;
+		:} ;
+
+LINSTRU::= LINSTRU:a IMPRE:b pcoma{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRU:a IF:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRU:a SELECT:b {:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRU:a FOR:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRU:a DECVAR:b pcoma{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRU:a ASIGVALOR:b pcoma{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRU:a WHILE:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRU:a DETENER:b pcoma{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRU:a RETORNO:b pcoma{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRU:a DOCUMENTO:b pcoma{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRU:a SETELEMENT:b pcoma{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRU:a MSG:b pcoma{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|LINSTRU:a LLAMADA:b pcoma{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}	
+		|LINSTRU:a REFERENCIA:b pcoma{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|REFERENCIA:a pcoma{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}	
+		|LLAMADA:a pcoma{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|SETELEMENT:a pcoma{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|DOCUMENTO:a pcoma{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|MSG:a pcoma{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|RETORNO:a pcoma{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|DETENER:a pcoma{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|WHILE:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|DECVAR:a pcoma{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|ASIGVALOR:a pcoma{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|FOR:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|SELECT:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|IF:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:}
+		|IMPRE:a pcoma{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:};
+
+
+SETELEMENT::= iden:a punto setelemento aparen cadena:b coma R:c cparen{:
+				nodo s = new nodo("setelemento",aleft,aright,false,a);
+				nodo valor = new nodo("objeto",bleft,bright,false,b);
+				nodo valviejo  = new nodo("valor",bleft,bright,false,b);
+				nodo nuevo_valor = new nodo("nuevo_valor",cleft,cright,false,c);
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+
+				hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+				valor.setHijos(hijos);
+				hijos = new ArrayList<nodo>();
+
+				hijos.add(new nodo(b.toString(),bleft,bright,false,null));
+				valviejo.setHijos(hijos);
+				hijos = new ArrayList<nodo>();
+
+				hijos.add((nodo)c);
+				nuevo_valor.setHijos(hijos);
+				hijos = new ArrayList<nodo>();
+
+				hijos.add(valor);
+				hijos.add(valviejo);
+				hijos.add(nuevo_valor);
+				s.setHijos(hijos);
+
+				RESULT= s;
+			:};
+			
+DOCUMENTO::= documento:a punto observador aparen R:b coma OBSERVADOR:c cparen{:
+				nodo s = new nodo("observador_doc",aleft,aright,false,null);
+				nodo evento = new nodo("evento",bleft,bright,false,b);
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+
+				hijos.add((nodo)b);
+				evento.setHijos(hijos);
+				hijos = new ArrayList<nodo>();
+
+				hijos.add(evento);
+				if(c!=null){
+					hijos.add((nodo)c);
+				}
+				s.setHijos(hijos);
+				RESULT = s;
+			:}			
+			|documento:a punto obtener aparen R:b cparen SETTEAR:c{:
+				nodo s = new nodo("obtener_doc",aleft,aright,false,null);
+				nodo evento = new nodo("objeto",bleft,bright,false,b);
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+
+				hijos.add((nodo)b);
+				evento.setHijos(hijos);
+				hijos = new ArrayList<nodo>();
+
+				hijos.add(evento);
+				if(c!=null){
+					hijos.add((nodo)c);
+				}
+				s.setHijos(hijos);
+				RESULT = s;
+			:};
+
+REFERENCIA::= iden:a punto observador aparen R:b coma OBSERVADOR:c cparen{:
+				nodo s = new nodo("observador_id",aleft,aright,false,null);
+				nodo elemento = new nodo("elemento",aleft,aright,false,a);
+				nodo evento = new nodo("evento",bleft,bright,false,b);
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+
+				hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+				elemento.setHijos(hijos);
+				hijos = new ArrayList<nodo>();
+
+				hijos.add((nodo)b);
+				evento.setHijos(hijos);
+				hijos = new ArrayList<nodo>();
+
+				hijos.add(elemento);
+				hijos.add(evento);
+				hijos.add((nodo)c);
+				s.setHijos(hijos);
+
+				RESULT= s;
+			:};
+
+OBSERVADOR::= LLAMADA:b {:RESULT=b;:}
+			|FUNCION:a{:RESULT = a;:};
+
+SETTEAR::= punto setelemento:a aparen R:b coma R:c cparen{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				nodo s = new nodo("setelemento",aleft,aright,false,null);
+				nodo valor = new nodo("objeto",bleft,bright,false,null);
+				nodo nuevo_valor = new nodo("nuevo_valor",cleft,cright,false,null);
+
+				hijos.add((nodo)b);
+				valor.setHijos(hijos);
+				hijos = new ArrayList<nodo>();
+
+				hijos.add((nodo)c);
+				nuevo_valor.setHijos(hijos);
+				hijos = new ArrayList<nodo>();
+
+				hijos.add(valor);
+				hijos.add(nuevo_valor);
+				s.setHijos(hijos);
+
+				RESULT=s;
+			:}
+			| {:RESULT=null;:};
+
+/*TIPOEVENTO::= rmodificado
+			|rcliqueado
+			|rlisto;*/
+
+MSG::= mensaje aparen R:a cparen{:
+			nodo s = new nodo("mensaje",aleft,aright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+
+			s.setHijos(hijos);
+			RESULT = s;
+		:};
+
+RETORNO::= retornar R:a{:
+			nodo s = new nodo("retorno",aleft,aright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+
+			s.setHijos(hijos);
+			RESULT = s;
+		:};
+
+DETENER::= detener:a{:RESULT= new nodo("detener",aleft,aright,false,null);:};		
+
+WHILE::= mientras aparen R:a cparen allave LINSTRU:b cllave{:
+			nodo s = new nodo("while",aleft,aright,false,null);
+			nodo cond = new nodo("cond",aleft,aright,false,null);
+			nodo instr = new nodo("listainstrucciones",bleft,bright,false,null);
+			instr.setHijos((ArrayList<nodo>)b);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+
+			hijos.add((nodo)a);
+			cond.setHijos(hijos);
+			hijos = new ArrayList<nodo>();
+
+			hijos.add(cond);
+			hijos.add(instr);
+			s.setHijos(hijos);
+
+			RESULT = s;
+
+		:};
+
+FOR::= para aparen iden:a dpuntos E:b pcoma R:c pcoma OPEFOR:d cparen allave LINSTRU:e cllave{:
+			nodo s = new nodo("for",aleft,aright,false,null);
+			nodo expr = new nodo("valor",aleft,aright,false,a);
+			nodo cond = new nodo("cond",aleft,aright,false,null);
+			nodo aumento = new nodo("operacion",dleft, dright, false,null);
+			nodo instr = new nodo("listainstrucciones",bleft,bright,false,null);
+			instr.setHijos((ArrayList<nodo>)e);
+			
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+
+			hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+			hijos.add((nodo)b);
+			expr.setHijos(hijos);
+			hijos = new ArrayList<nodo>();
+
+			hijos.add((nodo)c);
+			cond.setHijos(hijos);
+			hijos = new ArrayList<nodo>();
+
+			hijos.add((nodo)d);
+			aumento.setHijos(hijos);
+			hijos = new ArrayList<nodo>();
+
+			hijos.add(expr);
+			hijos.add(cond);
+			hijos.add(aumento);
+			hijos.add(instr);
+			s.setHijos(hijos);
+
+			RESULT= s;
+		:};
+
+OPEFOR::= decrementar:a{:
+			RESULT= new nodo("--",aleft,aleft,false,null);
+		:}
+		|incrementar:a{:
+			RESULT= new nodo("++",aleft,aleft,false,null);
+		:};
+
+SELECT::= selecciona aparen R:a cparen allave LCASOS:b DEF:c cllave{:
+			nodo s = new nodo("select",aleft,aright,false,null);
+			nodo s1 = new nodo("valor",aleft,aright,false,null);
+			nodo casos = new nodo("lcasos",aleft,aright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+
+			hijos.add((nodo)a);
+			s1.setHijos(hijos);
+			hijos = new ArrayList<nodo>();
+
+			casos.setHijos((ArrayList<nodo>)b);
+
+			hijos.add(s1);
+			hijos.add(casos);
+			if(c!=null){hijos.add((nodo)c);}
+
+			s.setHijos(hijos);
+
+			RESULT = s;
+		:};
+
+LCASOS::= LCASOS:a CASO:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add((nodo)b);
+			RESULT=hijos;
+		:}
+		|CASO:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			RESULT=hijos;
+		:};
+
+DEF::= defecto:a dpuntos LINSTRU:b{:
+		nodo s = new nodo("defecto",aleft,aright,false,null);
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		nodo instr = new nodo("listainstrucciones",bleft,bright,false,null);
+		instr.setHijos((ArrayList<nodo>)b);
+		hijos.add(instr);
+		s.setHijos(hijos);
+		RESULT= s;
+	:}
+	| {:RESULT=null;:};
+
+CASO::= caso E:a dpuntos LINSTRU:b{:
+		nodo s = new nodo("caso",aleft,aright,false,null);
+		nodo s1 = new nodo("valor",aleft,aright,false,null);
+		
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		s1.setHijos(hijos);
+		hijos = new ArrayList<nodo>();
+		hijos.add(s1);
+		nodo instr = new nodo("listainstrucciones",bleft,bright,false,null);
+		instr.setHijos((ArrayList<nodo>)b);
+		hijos.add(instr);
+
+		s.setHijos(hijos);		
+
+		RESULT= s;
+	:};
+
+IF::= si:a aparen R:b cparen allave LINSTRU:c cllave ELIF:d{:
+			nodo s = new nodo("if",aleft,aright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			
+			nodo cond = new nodo("cond",bleft,bright,false,null);
+			hijos.add((nodo)b);
+			cond.setHijos(hijos);
+
+			hijos = new ArrayList<nodo>();
+			hijos.add(cond);
+
+			nodo instr = new nodo("listainstrucciones",bleft,bright,false,null);
+			instr.setHijos((ArrayList<nodo>)c);
+			hijos.add(instr);
+			if(d!=null){
+				hijos.add((nodo)d);
+			}
+			s.setHijos(hijos);
+			RESULT= s;
+		:};
+
+ELIF::= sino:a allave LINSTRU:b cllave{:
+			nodo s = new nodo("sino",aleft,aright,false,null);
+			nodo instr = new nodo("listainstrucciones",bleft,bright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			instr.setHijos((ArrayList<nodo>)b);
+			hijos.add(instr);
+			s.setHijos(hijos);
+			RESULT= s;
+		:}
+		| {:RESULT=null;:};
+
+IMPRE::= imprimir:b aparen R:a cparen{:
+			nodo s = new nodo("imprimir",bleft,bright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			s.setHijos(hijos);
+			RESULT= s;
+		:};
+
+METODO::= funcion iden:a aparen LPARAM:b cparen allave LINSTRU:c cllave{:
+			nodo s = new nodo("metodo",aleft,aright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+			if(b!=null){
+				nodo param = new nodo("listaparam",bleft,bright,false,null);
+				param.setHijos((ArrayList<nodo>)b);
+				hijos.add(param);
+			}
+			nodo instr = new nodo("listainstrucciones",cleft,cright,false,null);
+			instr.setHijos((ArrayList<nodo>)c);
+			hijos.add(instr);
+			s.setHijos(hijos);
+			RESULT = s;
+		:};
+
+FUNCION::= funcion:a aparen LPARAM:b cparen allave LINSTRU:c cllave{:
+			nodo s = new nodo("funcionanidada",aleft,aright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			if(b!=null){
+				nodo param = new nodo("listaparam",bleft,bright,false,null);
+				param.setHijos((ArrayList<nodo>)b);
+				hijos.add(param);
+			}
+			nodo instr = new nodo("listainstrucciones",cleft,cright,false,null);
+			instr.setHijos((ArrayList<nodo>)c);
+			hijos.add(instr);
+			s.setHijos(hijos);
+			RESULT = s;
+		:};
+
+LPARAM::= LPARAM:a coma iden:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			ArrayList<nodo> ides = new ArrayList<nodo>();
+			nodo ide =new nodo("id",bleft,bright,false,b); 
+			ides.add(new nodo(b.toString(),bleft,bright,false,null));
+			ide.setHijos(ides);
+			hijos.add(ide);
+			RESULT=hijos;
+		:}
+		|iden:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			ArrayList<nodo> ides = new ArrayList<nodo>();			
+			nodo ide =new nodo("id",aleft,aright,false,null); 
+			ides.add(new nodo(a.toString(),aleft,aright,false,null));
+			ide.setHijos(ides);
+			hijos.add(ide);
+			RESULT=hijos;
+		:}
+		| {:RESULT=null;:};
+
+ASIGVALOR::= iden:a ASIG:b {:
+			nodo s = new nodo("asignar",aleft,aright,false,null);
+			ArrayList<nodo>hijos = new ArrayList<nodo>();
+			hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+			hijos.add((nodo)b);
+			s.setHijos(hijos);
+			RESULT= s;
+		:};
+
+ASIG::= dpuntos R:a{:
+			nodo s = new nodo("valor",aleft,aright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			s.setHijos(hijos);
+			RESULT= s;						
+		:}
+		|dpuntos:a allave LISTADATOS:b cllave{:
+			nodo s = new nodo("listavector",aleft,aright,true,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			if(b!=null){
+				nodo s1 = new nodo("listadatos",bleft,bright,false,null);
+				s1.setHijos((ArrayList<nodo>)b);
+				hijos.add(s1);
+			}
+			s.setHijos(hijos);
+			RESULT= s;
+		:}
+		|allave R:a cllave dpuntos R:b{:
+			nodo s =new nodo("posicionvector",aleft,aright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			nodo val = new nodo("valor",bleft,bright,false,null);
+			hijos.add((nodo)b);
+			val.setHijos(hijos);
+
+			hijos = new ArrayList<nodo>();
+			hijos.add((nodo)a);
+			hijos.add(val);
+			s.setHijos(hijos);
+			RESULT= s;
+		:};
+
+LID::= LID:a coma iden:b{:
+			ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+			hijos.add(new nodo(b.toString(),bleft,bright,false,b));
+			RESULT=hijos;
+		:}
+		|iden:a{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			hijos.add(new nodo(a.toString(),aleft,aright,false,a));
+			RESULT=hijos;
+		:};
+
+DECVAR::= rdimv:a LID:b ASIGNACION:c{:
+			nodo s = new nodo("decvar",aleft,aright,false,null);
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			nodo ides = new nodo("listaid",bleft,bright,false,b);
+			ides.setHijos((ArrayList<nodo>)b);
+			hijos.add(ides);
+			if(c!=null){
+				hijos.add((nodo)c);
+			}
+			s.setHijos(hijos);
+			RESULT= s;		
+		:};
+
+ASIGNACION::= dpuntos R:a{:
+				nodo s = new nodo("valor",aleft,aright,false,null);
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add((nodo)a);
+				s.setHijos(hijos);
+				RESULT= s;
+			:}
+			|dpuntos:a allave LISTADATOS:b cllave{:
+				nodo s = new nodo("listavector",aleft,aright,true,null);
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				if(b!=null){
+					nodo s1 = new nodo("listadatos",bleft,bright,false,null);
+					s1.setHijos((ArrayList<nodo>)b);
+					hijos.add(s1);
+				}
+				s.setHijos(hijos);
+				RESULT= s;
+			:}
+			|allave R:a cllave{:
+				nodo s =new nodo("posicionvector",aleft,aright,false,null);
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add((nodo)a);
+				s.setHijos(hijos);
+				RESULT= s;
+			:}
+			| {:RESULT=null;:};
+
+
+LISTADATOS::= LISTADATOS:a coma R:b{:
+				ArrayList<nodo> hijos = (ArrayList<nodo>)a;
+				hijos.add((nodo)b);
+				RESULT=hijos;		
+			:}
+			|R:a{:
+				ArrayList<nodo> hijos = new ArrayList<nodo>();
+				hijos.add((nodo)a);
+				RESULT=hijos;
+			:}
+			| {:RESULT=null;:};
+
+R::=R:a and R:b{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		hijos.add((nodo)b);
+		nodo s = new nodo("&&",aleft,aright,false,null);
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|R:a or R:b{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		hijos.add((nodo)b);
+		nodo s= new nodo("||",aleft,aright,false,null);
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|not R:b{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)b);
+		nodo s = new nodo("!",bleft,bright,false,null);
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|E:a mayor E:b{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		hijos.add((nodo)b);
+		nodo s = new nodo(">",aleft,aright,false,null);
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|E:a menor E:b{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		hijos.add((nodo)b);
+		nodo s = new nodo("<",aleft,aright,false,null);
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|E:a menorigual E:b{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		hijos.add((nodo)b);
+		nodo s = new nodo("<=",aleft,aright,false,null);
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|E:a mayorigual E:b{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		hijos.add((nodo)b);
+		nodo s = new nodo(">=",aleft,aright,false,null);
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|E:a diferente E:b{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		hijos.add((nodo)b);
+		nodo s = new nodo("!=",aleft,aright,false,null);
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|E:a igualacion E:b{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		hijos.add((nodo)b);
+		nodo s = new nodo("==",aleft,aright,false,null);
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|E:a{:RESULT=a;:};
+
+E::= E:a mas E:b{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		hijos.add((nodo)b);
+		nodo s = new nodo("+",aleft,aright,false,null);
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|E:a menos E:b{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		hijos.add((nodo)b);
+		nodo s = new nodo("-",aleft,aright,false,null);
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|E:a div E:b{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		hijos.add((nodo)b);
+		nodo s = new nodo("/",aleft,aright,false,null);
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|E:a por E:b{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		hijos.add((nodo)b);
+		nodo s = new nodo("*",aleft,aright,false,null);
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|E:a pot E:b{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		hijos.add((nodo)b);
+		nodo s = new nodo("^",aleft,aright,false,null);
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|E:a mod E:b{:
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		hijos.add((nodo)b);
+		nodo s = new nodo("%",aleft,aright,false,null);
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|E:a incrementar{:
+		nodo s = new nodo("incrementar",aleft,aright,false,null);
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		s.setHijos(hijos);
+		RESULT= s;
+	:}
+	|E:a decrementar{:
+		nodo s = new nodo("decrementar",aleft,aright,false,null);
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add((nodo)a);
+		s.setHijos(hijos);
+		RESULT= s;
+	:}
+	|iden:a allave R:b cllave{:
+		nodo s = new nodo("accesovector",aleft,aright,false,null);
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		hijos.add((nodo)b);
+		s.setHijos(hijos);
+		RESULT= s;
+	:}
+	|documento punto obtener aparen cadena:a cparen{:
+		nodo s = new nodo("documento",aleft,aright,false,null);
+		nodo s1 = new nodo("obtener",aleft,aright,false,null); 
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s1.setHijos(hijos);
+
+		hijos = new ArrayList<nodo>();
+		hijos.add(s1);
+		s.setHijos(hijos);
+
+		RESULT = s;
+	:}
+	|iden:a aparen LISTADATOS:b cparen{:
+		nodo s = new nodo("llamada",aleft,aright,false,null);
+		nodo funcion = new nodo(a.toString(),aleft,aright,false,null);
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add(funcion);
+		if(b!=null){
+			nodo s1 = new nodo("listadatos",bleft,bright,false,null);
+			s1.setHijos((ArrayList<nodo>)b);
+			hijos.add(s1);
+		}
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|iden:a punto rconteo{:
+		nodo s = new nodo("conteo",aleft,aright,false,null);
+		ArrayList<nodo> hijos = new ArrayList<nodo> ();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|iden:a punto atexto aparen cparen{:
+		nodo s = new nodo("atexto",aleft,aright,false,a);
+		ArrayList<nodo> hijos = new ArrayList<nodo> ();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|iden:a{:
+		nodo s =new nodo("iden", aleft, aright, false, a);    
+    	ArrayList<nodo> hijos = new ArrayList<nodo> ();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s.setHijos(hijos);
+		RESULT = s;
+    :}
+	|num:a{:
+		nodo s =new nodo("num", aleft, aright, false, a);    
+    	ArrayList<nodo> hijos = new ArrayList<nodo> ();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|rtrue:a {:		
+		nodo s =new nodo("true", aleft, aright, false, a);    
+    	ArrayList<nodo> hijos = new ArrayList<nodo> ();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|date:a{:
+		nodo s1 = new nodo("date",aleft,aright,false,null);
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s1.setHijos(hijos);
+		RESULT = s1;
+	:}
+	|dateti:a {:
+		nodo s1 = new nodo("datetime",aleft,aright,false,null);
+		ArrayList<nodo> hijos = new ArrayList<nodo>();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s1.setHijos(hijos);
+		RESULT = s1;
+	:}
+	|rfalse:a {:
+		nodo s =new nodo("false", aleft, aright, false, a);    
+    	ArrayList<nodo> hijos = new ArrayList<nodo> ();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s.setHijos(hijos);
+		RESULT = s;
+    :}
+	|cadena:a{:
+		nodo s =new nodo("cadena", aleft, aright, false, a);    
+    	ArrayList<nodo> hijos = new ArrayList<nodo> ();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|decimal:a{:
+		nodo s =new nodo("decimal", aleft, aright, false, a);    
+    	ArrayList<nodo> hijos = new ArrayList<nodo> ();
+		hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+		s.setHijos(hijos);
+		RESULT = s;
+	:}
+	|aparen R:a cparen{:
+		RESULT=a;
+	:}	
+	/*|menos R:a{:
+		nodo s = new nodo("-",aleft,aright,false,null);
+		ArrayList<nodo> hijos = new ArrayList<>();
+		hijos.add((nodo)a);
+		s.setHijos(hijos);
+		RESULT=s;
+	:}*/
+	;
+	/*|comillasimple num:a div num:b div num:c TIME:d comillasimple{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			nodo dia =new nodo("dia",aleft,aright,false,a); 
+			nodo mes = new nodo("mes",bleft,bright,false,b);
+			nodo anio = new nodo("anio",cleft,cright,false,c);
+			
+	    	hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+			dia.setHijos(hijos);
+			hijos = new ArrayList<nodo>();
+
+			hijos.add(new nodo(b.toString(),bleft,bright,false,null));
+			mes.setHijos(hijos);
+			hijos = new ArrayList<nodo>();
+
+			hijos.add(new nodo(c.toString(),cleft,cright,false,null));
+			anio.setHijos(hijos);
+			hijos = new ArrayList<nodo>();
+
+
+			hijos.add(dia);
+			hijos.add(mes);
+			hijos.add(anio);
+			nodo s1 = new nodo("date",aleft,aright,false,null);
+			if(d==null){
+				s1.setHijos(hijos);
+				RESULT = s1;
+			}else{
+				hijos.add((nodo)d);
+				s1.setHijos(hijos);
+				RESULT = s1;				
+			}
+	:};
+
+TIME::= num:a dpuntos num:b dpuntos num:c{:
+			ArrayList<nodo> hijos = new ArrayList<nodo>();
+			nodo hora =new nodo("hora",aleft,aright,false,a); 
+			nodo min = new nodo("minuto",bleft,bright,false,b);
+			nodo seg = new nodo("segundo",cleft,cright,false,c);
+			nodo s = new nodo("tiempo",aleft,aright, false,null);
+
+			hijos.add(new nodo(a.toString(),aleft,aright,false,null));
+			hora.setHijos(hijos);
+			hijos = new ArrayList<nodo>();
+
+			hijos.add(new nodo(b.toString(),bleft,bright,false,null));
+			min.setHijos(hijos);
+			hijos = new ArrayList<nodo>();
+
+			hijos.add(new nodo(c.toString(),cleft,cright,false,null));
+			seg.setHijos(hijos);
+			hijos = new ArrayList<nodo>();
+
+
+			hijos.add(hora);
+			hijos.add(min);
+			hijos.add(seg);
+			s.setHijos(hijos);
+			RESULT = s;
+		:}
+		| {:
+			RESULT=null;
+		:};*/
+

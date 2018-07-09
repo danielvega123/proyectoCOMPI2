@@ -1,0 +1,27 @@
+<CHTML>
+	<ENCABEZADO>
+		<CJS  ruta="/home/danielvega/Escritorio/calificacion/Archivos de Entrada/archivo2/informacion_ventas.cjs";><FIN-CJS>
+		<CCSS ruta="/home/danielvega/Escritorio/calificacion/Archivos de Entrada/archivo2/inicio.ccss";><FIN-CCSS>
+		<TITULO>"Index - venta de carros"<FIN-TITULO>
+	<FIN-ENCABEZADO>
+	<CUERPO>
+		<PANEL grupo = "panel_menu";  ancho = "800"; alto = "200";> 
+			<BOTON id="btn1";grupo = "boton_redireccion"; alto = "50"; ancho = "140"; ruta= "/home/danielvega/Escritorio/calificacion/Archivos de Entrada/archivo2/carros_ventas.chtml";>"Carros en venta"<FIN-BOTON>
+			<salto-fin>
+			<BOTON  id="btn2"; grupo = "boton_redireccion"; alto = "50"; ancho = "140"; ruta= "/home/danielvega/Escritorio/calificacion/Archivos de Entrada/archivo2/contactenos_ventas.chtml";>"Contactenos"<FIN-BOTON>
+		<FIN-PANEL>
+		<PANEL grupo = "panel_info"; ancho = "800"; alto = "200";>
+			<TEXTO grupo="titulo";>"Venta de automoviles"<FIN-TEXTO>
+			<TEXTO grupo="parrafo";>"Venta de carros nuevos y usados
+				ideales para todo tipo de familias."<FIN-TEXTO>
+		<FIN-PANEL>
+		<PANEL grupo = "panel_mision"; ancho = "800"; alto = "300";>
+			<TEXTO grupo="titulo";>"Mision"<FIN-TEXTO>
+			<TEXTO grupo="parrafo";>"Proveer al pueblo de Guatemala de vehiculos buenos y confiables a" <FIN-TEXTO><TEXTO grupo="negrita";> "muy bajo precio"<FIN-TEXTO>
+		<FIN-PANEL>
+		<PANEL id = "panel_vision"; ancho = "800"; alto = "200";>
+			<TEXTO grupo="titulo";>"Vision"<FIN-TEXTO>
+			<TEXTO grupo="parrafo";>"Ser la maxima venta de automoviles en el mercado"<FIN-TEXTO>
+		<FIN-PANEL>
+	<FIN-CUERPO>
+<FIN-CHTML>
